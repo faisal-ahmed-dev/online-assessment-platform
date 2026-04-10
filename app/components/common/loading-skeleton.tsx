@@ -34,3 +34,29 @@ export function CandidateTableSkeleton({
     </Skeleton>
   )
 }
+
+interface ExamScreenSkeletonProps {
+  loading: boolean
+  children: React.ReactNode
+}
+
+export function ExamScreenSkeleton({ loading, children }: ExamScreenSkeletonProps) {
+  return (
+    <Skeleton name="exam-screen" loading={loading}>
+      {children}
+    </Skeleton>
+  )
+}
+
+interface ExamCompletedSkeletonProps {
+  loading: boolean
+  children: React.ReactNode
+}
+
+export function ExamCompletedSkeleton({ loading, children }: ExamCompletedSkeletonProps) {
+  return (
+    <Skeleton name="exam-completed" loading={loading}>
+      {children}
+    </Skeleton>
+  )
+}

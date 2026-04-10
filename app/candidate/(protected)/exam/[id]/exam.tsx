@@ -12,6 +12,8 @@ import { QuestionNavigator } from "@/app/components/exam/question-navigator"
 import { BehaviorWarningToast } from "@/app/components/exam/behavior-warning-toast"
 import { ConfirmDialog } from "@/app/components/common/confirm-dialog"
 import { useExamById, useExamQuestions } from "@/app/lib/hooks/use-exams"
+import { ExamScreenSkeleton } from "@/app/components/common/loading-skeleton"
+import { ExamScreenFallback } from "@/app/components/common/exam-card-fallback"
 import { useExamSessionStore } from "@/app/lib/stores/exam-session.store"
 import { useAuthStore } from "@/app/lib/stores/auth.store"
 import { useBehaviorTracker } from "@/app/lib/hooks/use-behavior-tracker"
@@ -35,8 +37,9 @@ export function ExamScreen({ examId }: { examId: string }) {
     clearSession,
   } = useExamSessionStore()
 
-  const { data: exam } = useExamById(examId)
-  const { data: questions = [] } = useExamQuestions(exam?.questionSetIds ?? [])
+  const { data: exam, isLoading: examLoading } = useExamById(examId)
+  const { data: questions = [], isLoading: questionsLoading } = useExamQuestions(exam?.questionSetIds ?? [])
+  const isLoading = examLoading || questionsLoading || !session
 
   useEffect(() => {
     if (user && exam && (!session || session.examId !== examId)) {
@@ -70,108 +73,106 @@ export function ExamScreen({ examId }: { examId: string }) {
     router.push(routes.candidate.examCompleted(examId))
   }
 
-  if (!exam || !session || questions.length === 0) {
-    return (
-      <div className="min-h-screen flex items-center justify-center bg-[#F3F4F6]">
-        <p className="text-[#6B7280]">Loading exam...</p>
-      </div>
-    )
-  }
-
   const currentQuestion = questions[currentQuestionIndex]
   const currentAnswer =
-    session.answers.find((a) => a.questionId === currentQuestion?.id)?.answer ?? null
-  const answeredIds = session.answers.map((a) => a.questionId)
+    session?.answers.find((a) => a.questionId === currentQuestion?.id)?.answer ?? null
+  const answeredIds = session?.answers.map((a) => a.questionId) ?? []
   const isLast = currentQuestionIndex === questions.length - 1
 
   return (
-    <div className="min-h-screen flex flex-col bg-[#F3F4F6]">
-      <AppNavbar
-        rightSlot={
-          <div className="flex items-center gap-4">
-            <span className="text-sm text-[#374151] font-medium">
-              Question ({currentQuestionIndex + 1}/{questions.length})
-            </span>
-            <ExamTimer
-              durationSeconds={exam.durationMinutes * 60}
-              startedAt={session.startedAt}
-              onExpire={handleExpire}
-            />
-          </div>
-        }
-      />
-
-      <BehaviorWarningToast events={session.behaviorEvents} />
-
-      <main className="flex-1 pt-24 pb-8">
-        <div className="max-w-screen-xl mx-auto px-20">
-          <div className="flex gap-6">
-            {/* Sidebar navigator */}
-            <div className="w-52 shrink-0">
-              <QuestionNavigator
-                totalQuestions={questions.length}
-                currentIndex={currentQuestionIndex}
-                answeredIds={answeredIds}
-                questionIds={questions.map((q) => q.id)}
-                onSelect={goToQuestion}
-              />
-            </div>
-
-            {/* Main question area */}
-            <div className="flex-1 space-y-6">
-              {currentQuestion && (
-                <QuestionRenderer
-                  question={currentQuestion}
-                  questionNumber={currentQuestionIndex + 1}
-                  totalQuestions={questions.length}
-                  answer={currentAnswer}
-                  onAnswer={(answer) => setAnswer(currentQuestion.id, answer)}
+    <ExamScreenSkeleton loading={isLoading}>
+      {isLoading ? (
+        <ExamScreenFallback />
+      ) : (
+        <div className="min-h-screen flex flex-col bg-[#F3F4F6]">
+          <AppNavbar
+            rightSlot={
+              <div className="flex items-center gap-4">
+                <span className="text-sm text-[#374151] font-medium">
+                  Question ({currentQuestionIndex + 1}/{questions.length})
+                </span>
+                <ExamTimer
+                  durationSeconds={exam!.durationMinutes * 60}
+                  startedAt={session!.startedAt}
+                  onExpire={handleExpire}
                 />
-              )}
+              </div>
+            }
+          />
 
-              <div className="flex items-center justify-between">
-                <Button
-                  variant="outline"
-                  onClick={prevQuestion}
-                  disabled={currentQuestionIndex === 0}
-                  className="border-[#D1D5DB] text-[#374151] h-12 px-6"
-                >
-                  <ChevronLeft className="h-4 w-4 mr-1" />
-                  Previous
-                </Button>
+          <BehaviorWarningToast events={session!.behaviorEvents} />
 
-                <div className="flex gap-3">
-                  <ConfirmDialog
-                    trigger={
-                      <Button
-                        variant="outline"
-                        className="border-[#6C3AE8] text-[#6C3AE8] hover:bg-[#6C3AE8] hover:text-white h-12 px-6"
-                      >
-                        Submit Exam
-                      </Button>
-                    }
-                    title="Submit Exam"
-                    description={`You have answered ${answeredIds.length} of ${questions.length} questions. Are you sure you want to submit?`}
-                    confirmLabel="Yes, Submit"
-                    onConfirm={handleManualSubmit}
+          <main className="flex-1 pt-24 pb-8">
+            <div className="max-w-screen-xl mx-auto px-20">
+              <div className="flex gap-6">
+                {/* Sidebar navigator */}
+                <div className="w-52 shrink-0">
+                  <QuestionNavigator
+                    totalQuestions={questions.length}
+                    currentIndex={currentQuestionIndex}
+                    answeredIds={answeredIds}
+                    questionIds={questions.map((q) => q.id)}
+                    onSelect={goToQuestion}
                   />
-                  {!isLast && (
-                    <Button
-                      onClick={nextQuestion}
-                      className="bg-[#6C3AE8] hover:bg-[#5B2FD4] text-white h-12 px-6"
-                    >
-                      Next
-                      <ChevronRight className="h-4 w-4 ml-1" />
-                    </Button>
+                </div>
+
+                {/* Main question area */}
+                <div className="flex-1 space-y-6">
+                  {currentQuestion && (
+                    <QuestionRenderer
+                      question={currentQuestion}
+                      questionNumber={currentQuestionIndex + 1}
+                      totalQuestions={questions.length}
+                      answer={currentAnswer}
+                      onAnswer={(answer) => setAnswer(currentQuestion.id, answer)}
+                    />
                   )}
+
+                  <div className="flex items-center justify-between">
+                    <Button
+                      variant="outline"
+                      onClick={prevQuestion}
+                      disabled={currentQuestionIndex === 0}
+                      className="border-[#D1D5DB] text-[#374151] h-12 px-6"
+                    >
+                      <ChevronLeft className="h-4 w-4 mr-1" />
+                      Previous
+                    </Button>
+
+                    <div className="flex gap-3">
+                      <ConfirmDialog
+                        trigger={
+                          <Button
+                            variant="outline"
+                            className="border-[#6C3AE8] text-[#6C3AE8] hover:bg-[#6C3AE8] hover:text-white h-12 px-6"
+                          >
+                            Submit Exam
+                          </Button>
+                        }
+                        title="Submit Exam"
+                        description={`You have answered ${answeredIds.length} of ${questions.length} questions. Are you sure you want to submit?`}
+                        confirmLabel="Yes, Submit"
+                        onConfirm={handleManualSubmit}
+                      />
+                      {!isLast && (
+                        <Button
+                          onClick={nextQuestion}
+                          className="bg-[#6C3AE8] hover:bg-[#5B2FD4] text-white h-12 px-6"
+                        >
+                          Next
+                          <ChevronRight className="h-4 w-4 ml-1" />
+                        </Button>
+                      )}
+                    </div>
+                  </div>
                 </div>
               </div>
             </div>
-          </div>
-        </div>
-      </main>
+          </main>
 
-      <AppFooter />
-    </div>
+          <AppFooter />
+        </div>
+      )}
+    </ExamScreenSkeleton>
   )
 }

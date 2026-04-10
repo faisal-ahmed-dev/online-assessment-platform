@@ -7,6 +7,7 @@ const PUBLIC_PATHS = [
   routes.auth.employerSignIn,
   routes.auth.candidateSignIn,
   "/",
+  "/boneyard",
 ]
 
 export function proxy(request: NextRequest) {
