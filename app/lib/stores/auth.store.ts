@@ -3,7 +3,8 @@
 import { create } from "zustand"
 import { persist } from "zustand/middleware"
 import { UserModel } from "@/app/lib/models/user"
-import { AUTH_COOKIE_KEY, AUTH_STORAGE_KEY } from "@/app/config/constants"
+import { AUTH_STORAGE_KEY } from "@/app/config/constants"
+import { cookieManager } from "@/app/lib/infrastructure/cookie-manager"
 
 interface AuthState {
   user: Nullable<UserModel>
@@ -19,15 +20,11 @@ export const useAuthStore = create<AuthState>()(
       isAuthenticated: false,
       login: (user) => {
         set({ user, isAuthenticated: true })
-        if (typeof document !== "undefined") {
-          document.cookie = `${AUTH_COOKIE_KEY}=${user.role}; path=/; max-age=${60 * 60 * 24}`
-        }
+        cookieManager.setAuthRole(user.role)
       },
       logout: () => {
         set({ user: null, isAuthenticated: false })
-        if (typeof document !== "undefined") {
-          document.cookie = `${AUTH_COOKIE_KEY}=; path=/; max-age=0`
-        }
+        cookieManager.clearAuth()
       },
     }),
     { name: AUTH_STORAGE_KEY },

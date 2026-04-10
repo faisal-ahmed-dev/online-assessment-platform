@@ -4,13 +4,8 @@ import { useCallback } from "react"
 import { useRouter } from "next/navigation"
 import { useAuthStore } from "@/app/lib/stores/auth.store"
 import { LoginSchema } from "@/app/lib/validators/auth.schema"
-import { MOCK_EMPLOYER, MOCK_CANDIDATE } from "@/app/data/mock-users"
-import {
-  MOCK_EMPLOYER_CREDENTIALS,
-  MOCK_CANDIDATE_CREDENTIALS,
-} from "@/app/config/constants"
-import { routes } from "@/app/config/routes"
 import { UserRole } from "@/app/config/enums"
+import { authService } from "@/app/lib/services"
 
 export function useAuth(role: UserRole) {
   const { login, logout, user, isAuthenticated } = useAuthStore()
@@ -18,38 +13,19 @@ export function useAuth(role: UserRole) {
 
   const signIn = useCallback(
     async (data: LoginSchema): Promise<{ success: boolean; error?: string }> => {
-      const credentials =
-        role === UserRole.Employer
-          ? MOCK_EMPLOYER_CREDENTIALS
-          : MOCK_CANDIDATE_CREDENTIALS
-      const mockUser =
-        role === UserRole.Employer ? MOCK_EMPLOYER : MOCK_CANDIDATE
-
-      if (
-        data.email === credentials.email &&
-        data.password === credentials.password
-      ) {
-        login(mockUser)
-        router.push(
-          role === UserRole.Employer
-            ? routes.employer.dashboard
-            : routes.candidate.dashboard,
-        )
-        return { success: true }
+      const result = await authService.signIn(data, role)
+      if (result.success && result.user) {
+        login(result.user)
+        router.push(result.redirectTo!)
       }
-
-      return { success: false, error: "Invalid email or password" }
+      return { success: result.success, error: result.error }
     },
     [role, login, router],
   )
 
   const signOut = useCallback(() => {
     logout()
-    router.push(
-      role === UserRole.Employer
-        ? routes.auth.employerSignIn
-        : routes.auth.candidateSignIn,
-    )
+    router.push(authService.getSignOutRedirect(role))
   }, [role, logout, router])
 
   return { signIn, signOut, user, isAuthenticated }

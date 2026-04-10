@@ -24,14 +24,7 @@ import { RichTextEditor } from "@/app/components/common/rich-text-editor"
 import { QuestionModel } from "@/app/lib/models/question"
 import { QuestionType } from "@/app/config/enums"
 import { generateId } from "@/app/lib/utils/generate-id"
-
-const OPTION_LETTERS = ["A", "B", "C", "D", "E", "F"]
-
-const QUESTION_TYPE_LABELS: Record<QuestionType, string> = {
-  [QuestionType.Radio]: "MCQ",
-  [QuestionType.Checkbox]: "Checkbox",
-  [QuestionType.Text]: "Text",
-}
+import { OPTION_LETTERS, QUESTION_TYPE_LABELS } from "@/app/lib/constants/exam-labels"
 
 interface QuestionModalProps {
   open: boolean

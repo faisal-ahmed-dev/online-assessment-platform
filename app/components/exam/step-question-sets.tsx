@@ -9,20 +9,11 @@ import { EmptyState } from "@/app/components/common/empty-state"
 import { QuestionModel } from "@/app/lib/models/question"
 import { useExamStore } from "@/app/lib/stores/exam.store"
 import { QuestionType } from "@/app/config/enums"
-
-const OPTION_LETTERS = ["A", "B", "C", "D", "E", "F"]
-
-const TYPE_BADGE: Record<QuestionType, string> = {
-  [QuestionType.Radio]: "bg-purple-50 text-purple-700 border border-purple-200",
-  [QuestionType.Checkbox]: "bg-blue-50 text-blue-700 border border-blue-200",
-  [QuestionType.Text]: "bg-amber-50 text-amber-700 border border-amber-200",
-}
-
-const TYPE_LABEL: Record<QuestionType, string> = {
-  [QuestionType.Radio]: "MCQ",
-  [QuestionType.Checkbox]: "Checkbox",
-  [QuestionType.Text]: "Text",
-}
+import {
+  OPTION_LETTERS,
+  QUESTION_TYPE_BADGE,
+  QUESTION_TYPE_LABELS,
+} from "@/app/lib/constants/exam-labels"
 
 interface StepQuestionSetsProps {
   onBack: () => void
@@ -81,8 +72,8 @@ export function StepQuestionSets({
                       Question {index + 1}
                     </span>
                     <div className="flex items-center gap-2">
-                      <span className={`text-xs font-medium px-2 py-0.5 rounded-full ${TYPE_BADGE[q.type]}`}>
-                        {TYPE_LABEL[q.type]}
+                      <span className={`text-xs font-medium px-2 py-0.5 rounded-full ${QUESTION_TYPE_BADGE[q.type]}`}>
+                        {QUESTION_TYPE_LABELS[q.type]}
                       </span>
                       <span className="text-xs font-semibold text-[#6B7280] bg-[#F3F4F6] px-2 py-0.5 rounded-full">
                         {q.points} pt
@@ -203,9 +194,6 @@ export function StepQuestionSets({
         open={addOpen}
         onClose={() => setAddOpen(false)}
         onSubmit={addQuestion}
-        onSaveAndAddMore={() => {
-          // modal stays open, just resets — handled inside modal
-        }}
         mode="add"
         questionNumber={questions.length + 1}
       />

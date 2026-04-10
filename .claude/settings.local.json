@@ -7,7 +7,10 @@
       "Bash(grep -oP 'name=\"[^\"]{1,80}\"')",
       "mcp__plugin_figma_figma__get_screenshot",
       "Bash(pnpm build:*)",
-      "Bash(pnpm add:*)"
+      "Bash(pnpm add:*)",
+      "Bash(grep -E \"\\\\.\\(jsx?|tsx?|json\\)$\")",
+      "Bash(xargs wc:*)",
+      "Bash(xargs grep:*)"
     ]
   }
 }

@@ -6,21 +6,7 @@ import { Badge } from "@/components/ui/badge"
 import { ExamModel } from "@/app/lib/models/exam"
 import { ExamStatus } from "@/app/config/enums"
 import { formatMinutes } from "@/app/lib/utils/format-time"
-
-const STATUS_MAP: Record<ExamStatus, { label: string; className: string }> = {
-  [ExamStatus.Upcoming]: {
-    label: "Upcoming",
-    className: "bg-blue-50 text-blue-700 border-blue-200",
-  },
-  [ExamStatus.Active]: {
-    label: "Active",
-    className: "bg-green-50 text-green-700 border-green-200",
-  },
-  [ExamStatus.Completed]: {
-    label: "Completed",
-    className: "bg-gray-50 text-gray-600 border-gray-200",
-  },
-}
+import { EXAM_STATUS_MAP } from "@/app/lib/constants/exam-labels"
 
 type ExamCardProps =
   | {
@@ -36,7 +22,7 @@ type ExamCardProps =
 
 export function ExamCard(props: ExamCardProps) {
   const { exam } = props
-  const status = STATUS_MAP[exam.status]
+  const status = EXAM_STATUS_MAP[exam.status]
 
   return (
     <div className="bg-white rounded-xl border border-[#E5E7EB] p-8 flex flex-col gap-5 hover:shadow-md transition-shadow">

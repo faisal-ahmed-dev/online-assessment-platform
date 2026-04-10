@@ -1,7 +1,5 @@
 "use client"
 
-import { useEffect, useCallback } from "react"
-import { useRouter } from "next/navigation"
 import { ChevronLeft, ChevronRight } from "lucide-react"
 import { Button } from "@/components/ui/button"
 import { AppNavbar } from "@/app/components/layouts/app-navbar"
@@ -11,73 +9,28 @@ import { QuestionRenderer } from "@/app/components/exam/question-renderer"
 import { QuestionNavigator } from "@/app/components/exam/question-navigator"
 import { BehaviorWarningToast } from "@/app/components/exam/behavior-warning-toast"
 import { ConfirmDialog } from "@/app/components/common/confirm-dialog"
-import { useExamById, useExamQuestions } from "@/app/lib/hooks/use-exams"
 import { ExamScreenSkeleton } from "@/app/components/common/loading-skeleton"
 import { ExamScreenFallback } from "@/app/components/common/exam-card-fallback"
-import { useExamSessionStore } from "@/app/lib/stores/exam-session.store"
-import { useAuthStore } from "@/app/lib/stores/auth.store"
-import { useBehaviorTracker } from "@/app/lib/hooks/use-behavior-tracker"
-import { BehaviorEventType } from "@/app/config/enums"
-import { routes } from "@/app/config/routes"
+import { useExamSession } from "@/app/lib/hooks/use-exam-session"
 
 export function ExamScreen({ examId }: { examId: string }) {
-  const router = useRouter()
-  const { user } = useAuthStore()
   const {
+    exam,
+    questions,
     session,
+    isLoading,
+    currentQuestion,
+    currentAnswer,
+    answeredIds,
+    isLast,
     currentQuestionIndex,
-    startSession,
     setAnswer,
     nextQuestion,
     prevQuestion,
     goToQuestion,
-    recordBehaviorEvent,
-    submitSession,
-    setTimeout: setSessionTimeout,
-    clearSession,
-  } = useExamSessionStore()
-
-  const { data: exam, isLoading: examLoading } = useExamById(examId)
-  const { data: questions = [], isLoading: questionsLoading } = useExamQuestions(exam?.questionSetIds ?? [])
-  const isLoading = examLoading || questionsLoading || !session
-
-  useEffect(() => {
-    if (user && exam && (!session || session.examId !== examId)) {
-      startSession(examId, user.id)
-    }
-  }, [user, exam, examId])
-
-  const handleBehaviorEvent = useCallback(
-    (type: BehaviorEventType) => recordBehaviorEvent(type),
-    [recordBehaviorEvent],
-  )
-
-  const { requestFullscreen } = useBehaviorTracker({
-    isActive: !!session && !session.isSubmitted,
-    onEvent: handleBehaviorEvent,
-  })
-
-  useEffect(() => {
-    requestFullscreen()
-  }, [])
-
-  const handleExpire = useCallback(() => {
-    setSessionTimeout()
-    clearSession()
-    router.push(routes.candidate.examTimeout(examId))
-  }, [examId, router])
-
-  const handleManualSubmit = () => {
-    submitSession()
-    clearSession()
-    router.push(routes.candidate.examCompleted(examId))
-  }
-
-  const currentQuestion = questions[currentQuestionIndex]
-  const currentAnswer =
-    session?.answers.find((a) => a.questionId === currentQuestion?.id)?.answer ?? null
-  const answeredIds = session?.answers.map((a) => a.questionId) ?? []
-  const isLast = currentQuestionIndex === questions.length - 1
+    handleExpire,
+    handleManualSubmit,
+  } = useExamSession(examId)
 
   return (
     <ExamScreenSkeleton loading={isLoading}>
@@ -105,7 +58,6 @@ export function ExamScreen({ examId }: { examId: string }) {
           <main className="flex-1 pt-24 pb-8">
             <div className="max-w-screen-xl mx-auto px-20">
               <div className="flex gap-6">
-                {/* Sidebar navigator */}
                 <div className="w-52 shrink-0">
                   <QuestionNavigator
                     totalQuestions={questions.length}
@@ -116,7 +68,6 @@ export function ExamScreen({ examId }: { examId: string }) {
                   />
                 </div>
 
-                {/* Main question area */}
                 <div className="flex-1 space-y-6">
                   {currentQuestion && (
                     <QuestionRenderer
@@ -124,7 +75,9 @@ export function ExamScreen({ examId }: { examId: string }) {
                       questionNumber={currentQuestionIndex + 1}
                       totalQuestions={questions.length}
                       answer={currentAnswer}
-                      onAnswer={(answer) => setAnswer(currentQuestion.id, answer)}
+                      onAnswer={(answer) =>
+                        setAnswer(currentQuestion.id, answer)
+                      }
                     />
                   )}
 

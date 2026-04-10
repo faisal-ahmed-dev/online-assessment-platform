@@ -16,12 +16,7 @@ import {
 } from "@/components/ui/select"
 import { QuestionType } from "@/app/config/enums"
 import { Clock } from "lucide-react"
-
-const QUESTION_TYPE_LABELS: Record<QuestionType, string> = {
-  [QuestionType.Radio]: "MCQ (Single Answer)",
-  [QuestionType.Checkbox]: "Checkbox (Multiple Answer)",
-  [QuestionType.Text]: "Text / Essay",
-}
+import { QUESTION_TYPE_LABELS_LONG } from "@/app/lib/constants/exam-labels"
 
 const TOTAL_SLOTS_OPTIONS = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10]
 const TOTAL_QUESTION_SET_OPTIONS = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10]
@@ -184,7 +179,7 @@ export function StepBasicInfo({ onNext, onCancel }: StepBasicInfoProps) {
               <SelectContent>
                 {Object.values(QuestionType).map((type) => (
                   <SelectItem key={type} value={type}>
-                    {QUESTION_TYPE_LABELS[type]}
+                    {QUESTION_TYPE_LABELS_LONG[type]}
                   </SelectItem>
                 ))}
               </SelectContent>

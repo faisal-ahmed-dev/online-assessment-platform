@@ -3,40 +3,30 @@
 import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query"
 import { useEffect } from "react"
 import { useExamStore } from "@/app/lib/stores/exam.store"
-import { MOCK_EXAMS, MOCK_QUESTIONS } from "@/app/data/mock-exams"
 import { ExamModel } from "@/app/lib/models/exam"
-import { QuestionModel } from "@/app/lib/models/question"
-
-const EXAMS_QUERY_KEY = ["exams"] as const
-const QUESTIONS_QUERY_KEY = (ids: string[]) => ["questions", ids] as const
+import { QUERY_KEYS } from "@/app/lib/constants/query-keys"
+import { examService } from "@/app/lib/services"
 
 export function useExams() {
-  const { exams, setExams, addExam } = useExamStore()
+  const { exams, setExams } = useExamStore()
   const qc = useQueryClient()
 
   useEffect(() => {
     if (exams.length === 0) {
-      setExams(MOCK_EXAMS)
+      setExams(examService.getSeedData())
     }
   }, [])
 
   const { data, isLoading } = useQuery({
-    queryKey: EXAMS_QUERY_KEY,
-    queryFn: async (): Promise<ExamModel[]> => {
-      await new Promise((r) => setTimeout(r, 400))
-      return useExamStore.getState().exams
-    },
+    queryKey: QUERY_KEYS.exams.all,
+    queryFn: (): Promise<ExamModel[]> => examService.listAll(),
     initialData: exams,
     staleTime: 0,
   })
 
   const createExam = useMutation({
-    mutationFn: async (exam: ExamModel) => {
-      await new Promise((r) => setTimeout(r, 300))
-      addExam(exam)
-      return exam
-    },
-    onSuccess: () => qc.invalidateQueries({ queryKey: EXAMS_QUERY_KEY }),
+    mutationFn: (exam: ExamModel) => examService.create(exam),
+    onSuccess: () => qc.invalidateQueries({ queryKey: QUERY_KEYS.exams.all }),
   })
 
   return { exams: data ?? [], isLoading, createExam }
@@ -45,22 +35,16 @@ export function useExams() {
 export function useExamById(examId: string) {
   const { exams } = useExamStore()
   return useQuery({
-    queryKey: ["exam", examId],
-    queryFn: async (): Promise<ExamModel | undefined> => {
-      await new Promise((r) => setTimeout(r, 200))
-      return useExamStore.getState().exams.find((e) => e.id === examId)
-    },
+    queryKey: QUERY_KEYS.exams.byId(examId),
+    queryFn: (): Promise<ExamModel | undefined> => examService.getById(examId),
     initialData: exams.find((e) => e.id === examId),
   })
 }
 
 export function useExamQuestions(questionSetIds: string[]) {
   return useQuery({
-    queryKey: QUESTIONS_QUERY_KEY(questionSetIds),
-    queryFn: async (): Promise<QuestionModel[]> => {
-      await new Promise((r) => setTimeout(r, 200))
-      return MOCK_QUESTIONS.filter((q) => questionSetIds.includes(q.id))
-    },
+    queryKey: QUERY_KEYS.exams.questions(questionSetIds),
+    queryFn: () => examService.getQuestions(questionSetIds),
     enabled: questionSetIds.length > 0,
   })
 }

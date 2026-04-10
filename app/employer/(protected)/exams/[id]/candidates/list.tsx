@@ -8,12 +8,7 @@ import { CandidateTableSkeleton } from "@/app/components/common/loading-skeleton
 import { EmptyState } from "@/app/components/common/empty-state"
 import { useCandidates } from "@/app/lib/hooks/use-candidates"
 import { cn } from "@/lib/utils"
-
-const STATUS_MAP = {
-  completed: { label: "Completed", className: "bg-green-50 text-green-700 border-green-200" },
-  timeout: { label: "Timeout", className: "bg-red-50 text-red-700 border-red-200" },
-  pending: { label: "Pending", className: "bg-amber-50 text-amber-700 border-amber-200" },
-}
+import { CANDIDATE_STATUS_MAP } from "@/app/lib/constants/exam-labels"
 
 export function CandidatesList({ examId }: { examId: string }) {
   const { data: candidates, isLoading } = useCandidates(examId)
@@ -37,7 +32,7 @@ export function CandidatesList({ examId }: { examId: string }) {
             </TableHeader>
             <TableBody>
               {(candidates ?? []).map((c) => {
-                const status = STATUS_MAP[c.status]
+                const status = CANDIDATE_STATUS_MAP[c.status]
                 return (
                   <TableRow key={c.id} className="hover:bg-[#F9FAFB] transition-colors">
                     <TableCell className="font-medium text-[#111827] text-sm">{c.name}</TableCell>
