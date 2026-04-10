@@ -77,7 +77,7 @@ export function StepBasicInfo({ onNext, onCancel }: StepBasicInfoProps) {
           </Label>
           <Input
             placeholder="Enter online test title"
-            className="h-[52px] border-[#D1D5DB]"
+            className="h-12 border-[#D1D5DB]"
             {...register("title")}
           />
           {errors.title && (
@@ -94,7 +94,7 @@ export function StepBasicInfo({ onNext, onCancel }: StepBasicInfoProps) {
             <Input
               type="number"
               placeholder="Enter total candidates"
-              className="h-[52px] border-[#D1D5DB]"
+              className="h-12 border-[#D1D5DB]"
               {...register("totalCandidates")}
             />
             {errors.totalCandidates && (
@@ -113,7 +113,7 @@ export function StepBasicInfo({ onNext, onCancel }: StepBasicInfoProps) {
                 setValue("totalSlots", Number(v), { shouldValidate: true })
               }
             >
-              <SelectTrigger className="h-[52px] border-[#D1D5DB]">
+              <SelectTrigger className="h-12 border-[#D1D5DB]">
                 <SelectValue placeholder="Select total shots" />
               </SelectTrigger>
               <SelectContent>
@@ -144,7 +144,7 @@ export function StepBasicInfo({ onNext, onCancel }: StepBasicInfoProps) {
                 setValue("totalQuestionSet", Number(v), { shouldValidate: true })
               }
             >
-              <SelectTrigger className="h-[52px] border-[#D1D5DB]">
+              <SelectTrigger className="h-12 border-[#D1D5DB]">
                 <SelectValue placeholder="Select total question set" />
               </SelectTrigger>
               <SelectContent>
@@ -173,7 +173,7 @@ export function StepBasicInfo({ onNext, onCancel }: StepBasicInfoProps) {
                 })
               }
             >
-              <SelectTrigger className="h-[52px] border-[#D1D5DB]">
+              <SelectTrigger className="h-12 border-[#D1D5DB]">
                 <SelectValue placeholder="Select question type" />
               </SelectTrigger>
               <SelectContent>
@@ -193,7 +193,7 @@ export function StepBasicInfo({ onNext, onCancel }: StepBasicInfoProps) {
         </div>
 
         {/* Start Time + End Time + Duration (auto) */}
-        <div className="grid grid-cols-3 gap-4">
+        <div className="grid grid-cols-[1fr_1fr_minmax(0,200px)] gap-4">
           <div>
             <Label className="text-sm font-medium text-[#374151] mb-1.5 block">
               Start Time <span className="text-red-500">*</span>
@@ -201,7 +201,7 @@ export function StepBasicInfo({ onNext, onCancel }: StepBasicInfoProps) {
             <div className="relative">
               <Input
                 type="datetime-local"
-                className="h-[52px] border-[#D1D5DB] pr-10"
+                className="h-12 border-[#D1D5DB] pr-10"
                 {...register("startTime")}
               />
               <Clock className="absolute right-3 top-1/2 -translate-y-1/2 h-4 w-4 text-[#9CA3AF] pointer-events-none" />
@@ -219,7 +219,7 @@ export function StepBasicInfo({ onNext, onCancel }: StepBasicInfoProps) {
             <div className="relative">
               <Input
                 type="datetime-local"
-                className="h-[52px] border-[#D1D5DB] pr-10"
+                className="h-12 border-[#D1D5DB] pr-10"
                 {...register("endTime")}
               />
               <Clock className="absolute right-3 top-1/2 -translate-y-1/2 h-4 w-4 text-[#9CA3AF] pointer-events-none" />
@@ -238,27 +238,27 @@ export function StepBasicInfo({ onNext, onCancel }: StepBasicInfoProps) {
               readOnly
               value={duration}
               placeholder="Duration Time"
-              className="h-[52px] border-[#D1D5DB] bg-[#F9FAFB] text-[#6B7280] cursor-default"
+              className="h-12 border-[#D1D5DB] bg-[#F9FAFB] text-[#6B7280] cursor-default"
             />
           </div>
         </div>
       </div>
 
       {/* Actions */}
-      <div className="flex items-center justify-between mt-6">
+      <div className="bg-white rounded-2xl border border-[#E5E7EB] p-6 flex items-center justify-between mt-4">
         <Button
           type="button"
           variant="outline"
-          className="border-[#D1D5DB] text-[#374151] px-8 h-11"
+          className="border-[#E5E7EB] text-[#334155] px-8 h-12 rounded-xl font-semibold"
           onClick={onCancel}
         >
           Cancel
         </Button>
         <Button
           type="submit"
-          className="bg-[#6C3AE8] hover:bg-[#5B2FD4] text-white px-8 h-11"
+          className="bg-[#6C3AE8] hover:bg-[#5B2FD4] text-white px-8 h-12 rounded-xl font-semibold"
         >
-          Save & Continue
+          Save &amp; Continue
         </Button>
       </div>
     </form>

@@ -50,7 +50,7 @@ export function MultiStepIndicator({
             {index < steps.length - 1 && (
               <div
                 className={cn(
-                  "h-px w-16 mx-3 transition-all",
+                  "h-px w-20 mx-3 transition-all",
                   isCompleted ? "bg-[#6C3AE8]" : "bg-[#E5E7EB]",
                 )}
               />

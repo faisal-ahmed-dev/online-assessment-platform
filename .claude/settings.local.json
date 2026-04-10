@@ -10,7 +10,8 @@
       "Bash(pnpm add:*)",
       "Bash(grep -E \"\\\\.\\(jsx?|tsx?|json\\)$\")",
       "Bash(xargs wc:*)",
-      "Bash(xargs grep:*)"
+      "Bash(xargs grep:*)",
+      "Bash(where gh:*)"
     ]
   }
 }
