@@ -1,0 +1,13 @@
+{
+  "permissions": {
+    "allow": [
+      "mcp__plugin_figma_figma__get_design_context",
+      "Bash(python3:*)",
+      "Bash(node:*)",
+      "Bash(grep -oP 'name=\"[^\"]{1,80}\"')",
+      "mcp__plugin_figma_figma__get_screenshot",
+      "Bash(pnpm build:*)",
+      "Bash(pnpm add:*)"
+    ]
+  }
+}

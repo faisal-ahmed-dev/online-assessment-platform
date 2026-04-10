@@ -1,15 +1,19 @@
+import type { Metadata } from "next"
 import { Geist, Geist_Mono } from "next/font/google"
-
 import "./globals.css"
-import { ThemeProvider } from "@/components/theme-provider"
-import { cn } from "@/lib/utils";
+import { cn } from "@/lib/utils"
+import { Providers } from "@/app/components/providers"
 
-const geist = Geist({subsets:['latin'],variable:'--font-sans'})
+// boneyard-js registry — resolves skeleton bones by name
+import "@/bones/registry"
 
-const fontMono = Geist_Mono({
-  subsets: ["latin"],
-  variable: "--font-mono",
-})
+const geist = Geist({ subsets: ["latin"], variable: "--font-sans" })
+const fontMono = Geist_Mono({ subsets: ["latin"], variable: "--font-mono" })
+
+export const metadata: Metadata = {
+  title: "Akij Resource — Online Assessment Platform",
+  description: "Online examination and assessment platform by Akij Resource",
+}
 
 export default function RootLayout({
   children,
@@ -22,8 +26,8 @@ export default function RootLayout({
       suppressHydrationWarning
       className={cn("antialiased", fontMono.variable, "font-sans", geist.variable)}
     >
-      <body>
-        <ThemeProvider>{children}</ThemeProvider>
+      <body className="bg-[#F3F4F6]">
+        <Providers>{children}</Providers>
       </body>
     </html>
   )
