@@ -1,6 +1,6 @@
 "use client"
 
-import { Users, FileText, Calendar, Clock, AlertCircle } from "lucide-react"
+import { Users, FileText, Calendar, Clock } from "lucide-react"
 import { Button } from "@/components/ui/button"
 import { Badge } from "@/components/ui/badge"
 import { ExamModel } from "@/app/lib/models/exam"
@@ -86,13 +86,9 @@ export function ExamCard(props: ExamCardProps) {
               value={exam.questionSetIds.length.toString()}
             />
             <MetaItem
-              icon={<AlertCircle className="h-4 w-4" />}
-              label="Negative Marking"
-              value={
-                exam.negativeMarkingValue > 0
-                  ? `-${exam.negativeMarkingValue}/wrong`
-                  : "None"
-              }
+              icon={<FileText className="h-4 w-4" />}
+              label="Question Sets"
+              value={exam.totalQuestionSet?.toString() ?? "—"}
             />
           </>
         )}

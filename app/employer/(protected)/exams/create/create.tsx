@@ -20,10 +20,19 @@ export function CreateExam() {
 
   const handleSubmit = () => {
     if (!basicInfo) return
+    const durationMinutes = Math.max(
+      0,
+      Math.round(
+        (new Date(basicInfo.endTime).getTime() -
+          new Date(basicInfo.startTime).getTime()) /
+          60000,
+      ),
+    )
     createExam.mutate(
       {
         id: generateId(),
         ...basicInfo,
+        durationMinutes,
         questionSetIds: questions.map((q) => q.id),
         status: ExamStatus.Upcoming,
       },
@@ -41,7 +50,12 @@ export function CreateExam() {
       <div className="mb-8">
         <MultiStepIndicator steps={STEPS} currentStep={currentStep} />
       </div>
-      {currentStep === 1 && <StepBasicInfo onNext={goNext} />}
+      {currentStep === 1 && (
+        <StepBasicInfo
+          onNext={goNext}
+          onCancel={() => router.push(routes.employer.dashboard)}
+        />
+      )}
       {currentStep === 2 && (
         <StepQuestionSets
           onBack={goBack}

@@ -5,12 +5,12 @@ export interface ExamModel extends BaseModel {
   title: string
   totalCandidates: number
   totalSlots: number
+  totalQuestionSet: number
   questionSetIds: string[]
   questionType: QuestionType
   startTime: string
   endTime: string
   durationMinutes: number
-  negativeMarkingValue: number
   status: ExamStatus
 }
 

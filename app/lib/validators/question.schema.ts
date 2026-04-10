@@ -2,6 +2,9 @@ import { z } from "zod"
 import { requiredString } from "./common-rules"
 import { QuestionType } from "@/app/config/enums"
 
+/** Strip HTML tags and return plain text — used to validate rich-text option fields */
+const textContent = (html: string) => html.replace(/<[^>]*>/g, "").trim()
+
 export const questionSchema = z
   .object({
     title: requiredString,
@@ -10,11 +13,12 @@ export const questionSchema = z
     }),
     options: z.array(z.string()).default([]),
     points: z.coerce.number().min(1).default(1),
+    correctAnswer: z.string().default(""),
   })
   .refine(
     (data) => {
       if (data.type !== QuestionType.Text) {
-        return data.options.filter(Boolean).length >= 2
+        return data.options.filter((o) => textContent(o).length > 0).length >= 2
       }
       return true
     },

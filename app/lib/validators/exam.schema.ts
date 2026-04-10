@@ -7,13 +7,12 @@ export const examBasicInfoSchema = z
     title: requiredString,
     totalCandidates: requiredNumber,
     totalSlots: requiredNumber,
+    totalQuestionSet: requiredNumber,
     questionType: z.nativeEnum(QuestionType, {
       errorMap: () => ({ message: "Please select a question type" }),
     }),
     startTime: isoDateTimeString,
     endTime: isoDateTimeString,
-    durationMinutes: requiredNumber,
-    negativeMarkingValue: z.coerce.number().min(0).default(0),
   })
   .refine((data) => new Date(data.endTime) > new Date(data.startTime), {
     message: "End time must be after start time",
