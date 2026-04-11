@@ -84,7 +84,7 @@ A full-featured Online Assessment Platform built with Next.js, featuring an **Em
 
 ```bash
 # 1. Clone the repository
-git clone <YOUR_GITHUB_REPO_URL>
+git clone https://github.com/faisal-ahmed-dev/online-assessment-platform
 cd online-assessment-platform
 
 # 2. Install dependencies
