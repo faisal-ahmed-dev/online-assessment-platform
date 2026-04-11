@@ -48,7 +48,7 @@ export function SignInForm({ role, demoCredentials }: SignInFormProps) {
           <h1 className="text-2xl font-semibold text-[#111827] text-center mb-6">
             Sign In
           </h1>
-          <div className="bg-white rounded-2xl border border-[#E5E7EB] p-8 shadow-sm">
+          <div className="bg-white rounded-2xl border border-[#E5E7EB] p-6 sm:p-8 shadow-sm">
             <form onSubmit={handleSubmit(onSubmit)} className="space-y-5">
               <FormField
                 label="Email"

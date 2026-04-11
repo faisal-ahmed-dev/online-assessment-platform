@@ -31,7 +31,7 @@ export default function EmployerProtectedLayout({
     <div className="min-h-screen flex flex-col bg-[#F3F4F6]">
       <AppNavbar rightSlot={<UserDropdown user={user} onLogout={signOut} />} />
       <main className="flex-1 pt-20">
-        <div className="max-w-screen-xl mx-auto px-20 py-10">{children}</div>
+        <div className="max-w-screen-xl mx-auto px-4 py-6 sm:px-8 sm:py-8 lg:px-20 lg:py-10">{children}</div>
       </main>
       <AppFooter />
     </div>

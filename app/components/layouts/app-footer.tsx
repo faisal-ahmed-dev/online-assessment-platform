@@ -3,8 +3,8 @@ import { HELPLINE } from "@/app/config/constants"
 
 export function AppFooter() {
   return (
-    <footer className="h-20 bg-[#1A1B2E]">
-      <div className="h-full max-w-screen-xl mx-auto px-20 flex items-center justify-between">
+    <footer className="bg-[#1A1B2E] py-5 sm:h-20 sm:py-0">
+      <div className="h-full max-w-screen-xl mx-auto px-4 sm:px-8 lg:px-20 flex flex-col sm:flex-row items-center justify-between gap-3 sm:gap-0">
         {/* Powered by */}
         <div className="flex items-center gap-2">
           <span className="text-[#9CA3AF] text-sm">Powered by</span>
@@ -25,7 +25,7 @@ export function AppFooter() {
         </div>
 
         {/* Helpline */}
-        <div className="flex items-center gap-6">
+        <div className="flex flex-col sm:flex-row items-center gap-2 sm:gap-6">
           <span className="text-[#9CA3AF] text-sm">Helpline</span>
           <a
             href={`tel:${HELPLINE.phone}`}

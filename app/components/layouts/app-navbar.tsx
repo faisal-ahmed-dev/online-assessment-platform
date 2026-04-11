@@ -8,7 +8,7 @@ interface AppNavbarProps {
 export function AppNavbar({ rightSlot }: AppNavbarProps) {
   return (
     <header className="fixed top-0 left-0 right-0 z-50 h-20 bg-white border-b border-[#E5E7EB]">
-      <div className="h-full max-w-screen-xl mx-auto px-20 flex items-center justify-between">
+      <div className="h-full max-w-screen-xl mx-auto px-4 sm:px-8 lg:px-20 flex items-center justify-between">
         {/* Logo */}
         <Link href="/" className="flex items-center gap-2">
           <div className="flex items-center gap-1">
@@ -28,7 +28,7 @@ export function AppNavbar({ rightSlot }: AppNavbarProps) {
         </Link>
 
         {/* Centered title */}
-        <span className="absolute left-1/2 -translate-x-1/2 text-[#1A1B2E] font-semibold text-lg">
+        <span className="hidden sm:block absolute left-1/2 -translate-x-1/2 text-[#1A1B2E] font-semibold text-lg">
           Akij Resource
         </span>
 

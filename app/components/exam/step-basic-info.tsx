@@ -86,7 +86,7 @@ export function StepBasicInfo({ onNext, onCancel }: StepBasicInfoProps) {
         </div>
 
         {/* Total Candidates + Total Slots */}
-        <div className="grid grid-cols-2 gap-4 mb-5">
+        <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 mb-5">
           <div>
             <Label className="text-sm font-medium text-[#374151] mb-1.5 block">
               Total Candidates <span className="text-red-500">*</span>
@@ -133,7 +133,7 @@ export function StepBasicInfo({ onNext, onCancel }: StepBasicInfoProps) {
         </div>
 
         {/* Total Question Set + Question Type */}
-        <div className="grid grid-cols-2 gap-4 mb-5">
+        <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 mb-5">
           <div>
             <Label className="text-sm font-medium text-[#374151] mb-1.5 block">
               Total Question Set <span className="text-red-500">*</span>
@@ -193,7 +193,7 @@ export function StepBasicInfo({ onNext, onCancel }: StepBasicInfoProps) {
         </div>
 
         {/* Start Time + End Time + Duration (auto) */}
-        <div className="grid grid-cols-[1fr_1fr_minmax(0,200px)] gap-4">
+        <div className="grid grid-cols-1 sm:grid-cols-[1fr_1fr_minmax(0,200px)] gap-4">
           <div>
             <Label className="text-sm font-medium text-[#374151] mb-1.5 block">
               Start Time <span className="text-red-500">*</span>

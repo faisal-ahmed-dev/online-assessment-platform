@@ -19,7 +19,7 @@ export function PageHeader({ title, backHref, action }: PageHeaderProps) {
             <ChevronLeft className="h-5 w-5" />
           </Link>
         )}
-        <h1 className="text-2xl font-semibold text-[#111827]">{title}</h1>
+        <h1 className="text-xl sm:text-2xl font-semibold text-[#111827]">{title}</h1>
       </div>
       {action && <div>{action}</div>}
     </div>

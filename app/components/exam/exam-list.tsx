@@ -39,7 +39,7 @@ export function ExamList({ variant, onCardAction, emptyMessage }: ExamListProps)
 
       <ExamListSkeleton loading={isLoading}>
         {isLoading ? (
-          <div className="grid grid-cols-2 gap-6">
+          <div className="grid grid-cols-1 sm:grid-cols-2 gap-6">
             {Array.from({ length: 4 }).map((_, i) => (
               <ExamCardSkeleton key={i} />
             ))}
@@ -49,7 +49,7 @@ export function ExamList({ variant, onCardAction, emptyMessage }: ExamListProps)
             message={search ? `No exams found for "${search}"` : emptyMessage}
           />
         ) : (
-          <div className="grid grid-cols-2 gap-6">
+          <div className="grid grid-cols-1 sm:grid-cols-2 gap-6">
             {filtered.map((exam) =>
               variant === "employer" ? (
                 <ExamCard

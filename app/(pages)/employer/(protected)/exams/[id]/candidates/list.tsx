@@ -15,7 +15,7 @@ export function CandidatesList({ examId }: { examId: string }) {
 
   return (
     <CandidateTableSkeleton loading={isLoading}>
-      <div className="bg-white rounded-xl border border-[#E5E7EB] overflow-hidden">
+      <div className="bg-white rounded-xl border border-[#E5E7EB] overflow-hidden overflow-x-auto">
         {!isLoading && (!candidates || candidates.length === 0) ? (
           <EmptyState message="No candidates found for this exam." />
         ) : (

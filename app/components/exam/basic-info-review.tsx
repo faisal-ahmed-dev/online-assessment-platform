@@ -43,7 +43,7 @@ export function BasicInfoReview({
         </div>
 
         {/* Stats row */}
-        <div className="grid grid-cols-4 gap-4 mb-5">
+        <div className="grid grid-cols-2 sm:grid-cols-4 gap-4 mb-5">
           <div>
             <p className="text-xs font-medium text-[#64748B] mb-1">Total Candidates</p>
             <p className="text-sm font-semibold text-[#334155]">

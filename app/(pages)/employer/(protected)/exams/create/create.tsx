@@ -63,11 +63,11 @@ export function CreateExam() {
       {/* Header card */}
       <div className="bg-white border border-[#E5E7EB] rounded-2xl p-6">
         <p className="text-xl font-semibold text-[#334155] mb-4">Manage Online Test</p>
-        <div className="flex items-center justify-between">
+        <div className="flex flex-col sm:flex-row sm:items-center gap-3 sm:gap-0 justify-between">
           <MultiStepIndicator steps={STEPS} currentStep={currentStep} />
           <Button
             variant="outline"
-            className="border-[#E5E7EB] text-[#334155] font-semibold h-10 px-5 rounded-xl"
+            className="border-[#E5E7EB] text-[#334155] font-semibold h-10 px-5 rounded-xl self-start sm:self-auto"
             onClick={() => router.push(routes.employer.dashboard)}
           >
             Back to Dashboard

@@ -22,7 +22,7 @@ export function QuestionNavigator({
       <p className="text-xs font-semibold text-[#9CA3AF] uppercase tracking-wider mb-3">
         Questions
       </p>
-      <div className="grid grid-cols-5 gap-2">
+      <div className="grid grid-cols-8 sm:grid-cols-10 lg:grid-cols-5 gap-2">
         {Array.from({ length: totalQuestions }).map((_, index) => {
           const isAnswered = answeredIds.includes(questionIds[index])
           const isCurrent = index === currentIndex
