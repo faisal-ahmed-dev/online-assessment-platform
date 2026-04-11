@@ -11,7 +11,8 @@
       "Bash(grep -E \"\\\\.\\(jsx?|tsx?|json\\)$\")",
       "Bash(xargs wc:*)",
       "Bash(xargs grep:*)",
-      "Bash(where gh:*)"
+      "Bash(where gh:*)",
+      "Bash(git -C /d/CODEBLOCKS/interview/akij/online-assessment-platform log --oneline)"
     ]
   }
 }
